@@ -30,7 +30,11 @@ world.plot(								# plot the world dataset
     scheme = 'quantiles',	# specify how the colour map will be mapped to the values in POP_EST
     linewidth = 0.5,			# specify the line width for the country outlines
     edgecolor = 'gray',		# specify the line colour for the country outlines
-    )
+   legend = True,               #adding legend to map
+legend_kwds = {
+    'loc': 'lower left',
+    'title': 'Population Density'
+    } )
 
 # plot the graticule
 graticule.plot(
@@ -40,6 +44,8 @@ graticule.plot(
     )
 # turn off the visible axes on the map
 my_ax.axis('off')
+#Add map Title
+my_ax.set(title="Population Density: Equal Area Projection Coordinate Reference System")
 # save the result
 savefig('./out/1.png')
 print("done!")
