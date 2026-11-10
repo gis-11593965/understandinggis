@@ -8,7 +8,7 @@ print(world.columns)
 world['gdp_per_capita'] = (world['GDP_MD_EST'] * 1000000) / world['POP_EST']
 print(world.head())
 from matplotlib.pyplot import subplots, savefig
-ea_proj=("+proj=eqearth +lon_0=0 +datum=WGS84 +units=m +no_defs")
+ea_proj=("+proj=aeqd +lon_0=0 +lat_0=0 +datum=WGS84 +units=m +no_defs")
 # reproject all three layers to equal earth
 world = world.to_crs(ea_proj)
 graticule = graticule.to_crs(ea_proj)
