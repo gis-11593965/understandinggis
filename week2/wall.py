@@ -33,3 +33,9 @@ print(type(mex_col))
 
 # extract the geometry objects themselves from the GeoSeries
 mex_geom= mex_col.iloc[0]
+
+# calculate the intersection of the geometry objects
+border = usa_geom.intersection(mex_geom)
+
+# Displaying border
+print(border)
