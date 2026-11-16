@@ -1,4 +1,5 @@
 from geopandas import read_file, GeoSeries
+from matplotlib.pyplot import subplots, savefig, title
 
 # load the shapefile of countries - this gives a table of 12 columns and 246 rows (one per country)
 world = read_file("../../data/natural-earth/ne_10m_admin_0_countries.shp")
@@ -39,3 +40,17 @@ border = usa_geom.intersection(mex_geom)
 
 # Displaying border
 print(border)
+
+# create map axis object
+my_fig, my_ax = subplots(1, 1, figsize=(16, 10))
+
+# remove axes
+my_ax.axis('off')
+
+# plot the border
+GeoSeries(border).plot(
+  ax = my_ax
+	)
+
+# save the image
+savefig('./out/first-border.png')
