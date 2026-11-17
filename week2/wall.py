@@ -1,5 +1,6 @@
 from geopandas import read_file, GeoSeries
 from matplotlib.pyplot import subplots, savefig, title
+from pyproj import Geod
 
 # load the shapefile of countries - this gives a table of 12 columns and 246 rows (one per country)
 world = read_file("../../data/natural-earth/ne_10m_admin_0_countries.shp")
@@ -54,3 +55,32 @@ GeoSeries(border).plot(
 
 # save the image
 savefig('./out/first-border.png')
+
+# set which ellipsoid you would like to use
+g = Geod(ellps='WGS84')
+
+print(border)
+
+# loop through each segment in the line and print the coordinates
+for segment in border.geoms:
+	print(f"from:{segment.coords[0]}\tto:{segment.coords[1]}")
+    
+# initialise a variable to hold the cumulative length
+cumulative_length = 0
+
+# loop through each segment in the line
+for segment in border.geoms:
+
+	# THIS LINE NEEDS COMPLETING
+	distance = g.inv(
+        segment.coords[0][0],
+        segment.coords[0][1],
+        segment.coords[1][0],
+        segment.coords[1][1]
+        )[2]
+
+	# add the distance to our cumulative total
+	cumulative_length += distance
+    
+#total cumulative border distance
+print(cumulative_length)
