@@ -84,3 +84,56 @@ for segment in border.geoms:
     
 #total cumulative border distance
 print(cumulative_length)
+
+lambert_conic="+proj=lcc +lon_0=-104.765625 +lat_1=24.2159085 +lat_2=33.5676964 +lat_0=28.8918025 +datum=WGS84 +units=m +no_defs"
+
+# open the graticule dataset
+graticule = read_file("../../data/natural-earth/ne_110m_graticules_5.shp")
+
+# create map axis object
+my_fig, my_ax = subplots(1, 1, figsize=(16, 10))
+
+# remove axes
+my_ax.axis('off')
+
+# set title
+title(f"The wall would have been {cumulative_length / 1000:.2f} km long.")
+
+# project border
+border_series = GeoSeries(border, crs=world.crs).to_crs(lambert_conic)
+
+# extract the bounds from the (projected) GeoSeries Object
+minx, miny, maxx, maxy = border_series.geometry.iloc[0].bounds
+
+# set bounds (10000m buffer around the border itself, to give us some context)
+buffer = 10000
+my_ax.set_xlim([minx - buffer, maxx + buffer])
+my_ax.set_ylim([miny - buffer, maxy + buffer])
+
+# plot data
+usa.to_crs(lambert_conic).plot(
+    ax = my_ax,
+    color = '#ccebc5',
+    edgecolor = '#4daf4a',
+    linewidth = 0.5,
+    )
+mex.to_crs(lambert_conic).plot(
+    ax = my_ax,
+    color = '#fed9a6',
+    edgecolor = '#ff7f00',
+    linewidth = 0.5,
+    )
+border_series.plot(     # note that this has already been projected above!
+    ax = my_ax,
+    color = '#984ea3',
+    linewidth = 2,
+    )
+graticule.to_crs(lambert_conic).plot(
+    ax=my_ax,
+    color='grey',
+    linewidth = 1,
+    )
+
+# save the result
+savefig('out/2.png', bbox_inches='tight')
+print("done!")
