@@ -1,4 +1,5 @@
 from math import sqrt
+from geopandas import read_file
 
 def distance(x1, y1, x2, y2):
         """
@@ -18,3 +19,11 @@ def distance(x1, y1, x2, y2):
 #Testing Distance functio
 print(distance(345678,456789,445678,556789))
         
+# read in shapefiles, ensure that they all have the same CRS
+pop_points = read_file("../../data/gulu/pop_points.shp")
+water_points = read_file("../../data/gulu/water_points.shp")
+gulu_district = read_file("../../data/gulu/district.shp")
+
+print(pop_points.crs.to_epsg())
+print(water_points.crs.to_epsg())
+print(gulu_district.crs.to_epsg())
