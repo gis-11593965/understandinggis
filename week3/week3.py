@@ -53,3 +53,7 @@ precise_matches = possible_matches.loc[possible_matches.within(polygon)]
 
 # how many rows are left now?
 print(f"Filtered wells: {len(precise_matches.index)}")
+
+# rebuild the spatial index using the new, smaller dataset
+gulu_geoms=precise_matches.geometry.to_list()
+idx = STRtree(gulu_geoms)
