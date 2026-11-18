@@ -24,6 +24,6 @@ pop_points = read_file("../../data/gulu/pop_points.shp")
 water_points = read_file("../../data/gulu/water_points.shp").to_crs(pop_points.crs)
 gulu_district = read_file("../../data/gulu/district.shp").to_crs(pop_points.crs)
 
-
+print(water_points.estimate_utm_crs(datum_name='Arc 1960'))
 
 
