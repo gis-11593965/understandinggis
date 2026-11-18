@@ -57,3 +57,17 @@ print(f"Filtered wells: {len(precise_matches.index)}")
 # rebuild the spatial index using the new, smaller dataset
 gulu_geoms=precise_matches.geometry.to_list()
 idx = STRtree(gulu_geoms)
+
+#Empty list to store distance calculations
+distances=[]
+
+for id, house in pop_points.iterrows():
+    # use the spatial index to get the index of the closest well
+    nearest_well_index = idx.nearest(house.geometry)
+    # use the spatial index to get the closest well object from the original dataset
+    nearest_well=precise_matches.iloc[nearest_well_index].geometry.geoms[0]
+    # store the distance to the nearest well
+    distances.append(distance(house.geometry.x, house.geometry.y, nearest_well.x, nearest_well.y))
+    
+#Check length distance
+print(distances[:5])
