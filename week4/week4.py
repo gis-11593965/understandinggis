@@ -4,15 +4,10 @@ from sys import exit
 # open a dataset of all countries in the world
 world = read_file("../../data/natural-earth/ne_10m_admin_0_countries.shp")
 
-#checking the columns
-print(world.columns)
-print((world["ADM0_A3"]=="GBR").head())
 
 # extract the UK, project, and extract the geometry
 uk = world[((world["ADM0_A3"] == "GBR"))].to_crs("EPSG:27700").geometry.iloc[0]	# COMPLETE THIS LINE
 
-# report geometry type
-print(f"geometry type: {uk.geom_type}")
 
 # quit the analysis if we are dealing with any geometry but a MultiPolygon
 if uk.geom_type != 'MultiPolygon':
@@ -36,3 +31,15 @@ for poly in uk.geoms:
 #print largest area and number of coords
 print(biggest_area)
 print(len(coord_list))
+
+# set the percentage of nodes that you want to remove
+SIMPLIFICATION_PERC = 98
+
+# how many nodes do we need?
+n_nodes = int(len(coord_list) / 100.0 * (100 - SIMPLIFICATION_PERC))
+
+# ensure that there are at least 3 nodes (minimum for a polygon)
+if n_nodes < 3:
+	n_nodes = 3 
+    
+print(n_nodes)
